@@ -3,6 +3,7 @@
 ## re-run manifests execution via fuel task run                        ##
 #########################################################################
 import os
+import checksum
 import gitmgm
 from gitmgm import GitMgm
 import lcmconf
@@ -47,5 +48,7 @@ def task_execute():
 		node_collection = NodeCollection.init_with_ids(params.node)
 		Environment(cluster_id).execute_tasks(node_collection, params.tasks)
 
-git_fetch_manifests()
-
+if git_fetch_manifests() == 1:
+	cluster_node_list()
+	task_execute()
+checksum.task_checksum("compare")
