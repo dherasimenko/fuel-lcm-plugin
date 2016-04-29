@@ -1,6 +1,6 @@
 import ConfigParser
 
-class lcmconf:
+class LcmConf:
 	config_file = "./config.ini"
 	conf = ConfigParser.ConfigParser()
 	conf.read(config_file)

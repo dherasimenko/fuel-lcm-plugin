@@ -16,15 +16,15 @@ class GitMgm:
 			origin.fetch()
 			origin.pull(origin.refs[0].remote_head)
 			commit = git.Repo(local_dir).head.commit
-			lcmconf.lcmconf().cfgwrite("GIT","commit", commit)
+			lcmconf.LcmConf().cfgwrite("GIT","commit", commit)
 		return True
 
 	def gitdiff(self,local_dir):
 		repo = git.Repo(local_dir)
 		latest_commit = repo.head.commit
-		if str(latest_commit) != str(lcmconf.lcmconf().cfgread("GIT", "commit")):
+		if str(latest_commit) != str(lcmconf.LcmConf().cfgread("GIT", "commit")):
 			previews_commit = repo.commit("HEAD~1")
-			lcmconf.lcmconf().cfgwrite("GIT","commit", git.Repo(local_dir).head.commit)
+			lcmconf.LcmConf().cfgwrite("GIT","commit", git.Repo(local_dir).head.commit)
 			return True
 		else:
 			return False
