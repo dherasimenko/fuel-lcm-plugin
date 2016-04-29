@@ -2,6 +2,7 @@ import git
 import os
 import shutil
 import lcmconf
+import checksum
 
 class GitMgm:
 	def gitsync(self,remote_git, local_dir):
@@ -16,7 +17,8 @@ class GitMgm:
 			origin.fetch()
 			origin.pull(origin.refs[0].remote_head)
 			commit = git.Repo(local_dir).head.commit
-			lcmconf.LcmConf().cfgwrite("GIT","commit", commit)
+#			print commit
+			lcmconf.LcmConf().cfgwrite("GIT", "commit", str(commit))
 		return True
 
 	def gitdiff(self,local_dir):

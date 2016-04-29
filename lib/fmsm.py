@@ -17,11 +17,13 @@ from fuelclient.objects.node import NodeCollection
 
 # parameters from config file and web interface (future change to yaml)
 remote = LcmConf().cfgread("GIT", "remote")
-local = LcmConf().cfgread("GIT", "local")
+#local = LcmConf().cfgread("GIT", "local")
+local = "/etc/puppet/" + client.APIClient.get_request("/version")['openstack_version'] + "/modules/osnailyfacter/modular/light-lcm"
+native = "/etc/puppet/" + client.APIClient.get_request("/version")['openstack_version']
 cluster_id = 1
 
 class params:
-	dir = local
+	dir = native
 	filepattern = "*tasks.yaml"
 	tasks = [ "rsync_core_puppet" ]
 	node = []
@@ -42,13 +44,15 @@ def cluster_node_list():
 		if n['online'] != False:
 			if n['status'] == "ready" or n['status'] == "error" or n['status'] == "provisioned":
 				params.node.append(n['id'])
+				print params.node
 
 def task_execute():
 	if params.node != []:
 		node_collection = NodeCollection.init_with_ids(params.node)
 		Environment(cluster_id).execute_tasks(node_collection, params.tasks)
-
+checksum.task_checksum(native,"generate")
 if git_fetch_manifests() == 1:
 	cluster_node_list()
 	task_execute()
-checksum.task_checksum("compare")
+	checksum.task_checksum(native,"compare")
+

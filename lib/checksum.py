@@ -11,9 +11,9 @@ def md5(fname):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
-def task_checksum(mode):
+def task_checksum(local_dir,mode):
 	tasks_yaml = []
-	for root, dirs, files in os.walk("./temp"):
+	for root, dirs, files in os.walk(local_dir):
 	    for file in files:
 	        if file.endswith("tasks.yaml"):
 		     tasks_yaml.append(os.path.join(root, file))
