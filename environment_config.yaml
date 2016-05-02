@@ -1,0 +1,19 @@
+attributes:
+  remote_git_path:
+    value: 'https://github.com/dherasimenko/lcm_test_repo'
+    label: 'Remote Git Repository:'
+    description: ''
+    weight: 10
+    type: "text"
+    regex:
+      source: '.+'
+      error: "This field should not be empty"
+  locale_fuel_tasks_path:
+    value: '/etc/puppet/modules/osnailyfactor/modular/light-lcm'
+    label: 'Local Folder for Fuel Tasks:'
+    description: ''
+    weight: 20
+    type: 'text'
+    regex:
+      source: '.+'
+      error: "This field should not be empty"

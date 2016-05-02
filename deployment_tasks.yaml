@@ -1,0 +1,31 @@
+# These tasks will be merged into deployment graph. Here you
+# can specify new tasks for any roles, even built-in ones.
+
+- id: nfs-server
+  type: group
+  role: [nfs-server]
+  tasks: [fuel_pkgs, hiera, globals, tools, logging, netconfig,
+          hosts, firewall]
+  parameters:
+    strategy:
+      type: one_by_one
+
+- id: nfs-common-setup
+  type: puppet
+  role: [cinder]
+  required_for: [post_deployment_end]
+  requires: [post_deployment_start]
+  parameters:
+    puppet_manifest: "puppet/nfs-common-cinder.pp"
+    puppet_modules: "/etc/puppet/modules"
+    timeout: 3600
+
+- id: nfs-server-setup
+  type: puppet
+  role: [nfs-server]
+  required_for: [post_deployment_end]
+  requires: [post_deployment_start]
+  parameters:
+    puppet_manifest: "puppet/nfs-server.pp"
+    puppet_modules: "/etc/puppet/modules/"
+    timeout: 3600

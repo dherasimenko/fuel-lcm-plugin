@@ -46,13 +46,13 @@ def cluster_node_list():
 				params.node.append(n['id'])
 				print params.node
 
-def task_execute():
+def task_execute(tasks):
 	if params.node != []:
 		node_collection = NodeCollection.init_with_ids(params.node)
-		Environment(cluster_id).execute_tasks(node_collection, params.tasks)
+		Environment(cluster_id).execute_tasks(node_collection, tasks)
+
 checksum.task_checksum(native,"generate")
 if git_fetch_manifests() == 1:
 	cluster_node_list()
-	task_execute()
+	task_execute(params.tasks)
 	checksum.task_checksum(native,"compare")
-
